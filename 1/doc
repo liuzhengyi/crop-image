@@ -1,0 +1,163 @@
+Documentation
+Requirements and Implementation
+This plugin require: JQuery 1.4+,  JQuery UI 1.8+
+
+<link href="css/jquery-ui-1.7.2.custom.css" rel="Stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.cropzoom.js"></script>
+$(document).ready(function(){
+          var cropzoom = $('#crop_container2').cropzoom({
+            width:400,
+            height:300,
+            bgColor: '#CCC',
+            enableRotation:true,
+            enableZoom:true,
+            zoomSteps:10,
+            rotationSteps:10,
+            expose:{
+                slidersOrientation: 'horizontal',
+                zoomElement: '#zoom',
+                rotationElement: '#rot',
+                elementMovement:'#movement'
+            },
+            selector:{
+              centered:true,
+              borderColor:'blue',
+              borderColorHover:'yellow'
+            },
+            image:{
+                source:'chicas1024.jpg',
+                width:1024,
+                height:768,
+                minZoom:50,
+                maxZoom:200,
+                startZoom:40,
+                useStartZoomAsMinZoom:true,
+                snapToContainer:true
+            }
+        });
+});
+
+= Documentation =
+== General parameters ==
+== 一般设置 ==
+
+ParameterName	Default	    Description
+--------------------------------------------------------------------------------
+width	        640	        Width of the Container 容器宽
+Height	        480	        Height of the Container 容器高
+bgColor	        #000	    Background of the Container 容器背景色
+overlayColor	#000	    Color of the overlay layer when drag the selector 移动选择器时 选择器头的颜色
+enableRotation	true	    Enable/Disable the rotation slider  旋转栏
+enableZoom	    true	    Enable/Disable the zoom slider      缩放栏
+rotationSteps	5	        Set the steps for the rotation slider   旋转栏步进
+zoomSteps	    1	        Set the steps for the zoom slider       缩放栏步进
+
+restore		                this restore the plugin to the original values send
+	                        this method will send the information to the server for cropping.
+                            重置本插件状态并且将截图信息发送至server
+
+                            Parameters
+                            url: location of the server file to process the cropping
+                            type: post / get
+                            custom: json object to add in the request e.g. {id=1,username=âjhonâ}
+                            onSuccess: callback to get the response of the request.
+                            e.g: cropzoom.send(âprocess.phpâ,'POSTâ,{id:1},function(r){ alert(r); });
+
+== Selector Properties, Callbacks, methods. ==
+== 选择器属性，回调函数，方法 ==
+Parameter Name	            Default	Description
+--------------------------------------------------------------------------------
+showPositionsOnDrag         true	Enable/Disable info of X and Y axis in the selector 拖动时显示坐标
+showDimetionsOnDrag         true	Enable/Disable info of width and height in the selector 拖动时高宽
+borderColor	                yellow  Change  the border color of the selector    改变选择器边框的颜色
+borderColorHover            red	    Change the border color of the selector on mouse over   鼠标悬停时选择器边框的颜色
+Centered	                false	Center the selector in the container        将选择器在容器内置中
+x	                        0	    x axis value from selector                  选择器X轴坐标
+y	                        0	    y axis value from selector                  选择器Y轴坐标
+w	                        229	    width of the selector (you can resize to this value as minimum) 选择器宽
+h	                        100	    height of the selector (you can resize to this value as minimum) 选择器高
+aspectRatio	                false	this keep the aspect ratio of the selector when resize  保持纵横比
+maxWidth	                null	this will be the limit of the selector width            选择器高度上限
+maxHeight	                null	this will be the limit of the selector height           选择器宽度上限
+bgInfoLayer	                #FFF	this will be set the background-color of the info layer that appears over the selector 选择器头背景色
+infoFontSize	            10	    this will be set the font-size of the info layer that appears over the selector 选择器头字号
+infoFontColor	            blue	this will be set the font color of the info layer that appears over the selector    选择器字体颜色
+startWithOverlay	        false	this will be turn on the dark overlay at start      ???
+hideOverlayOnDragAndResize	true	this will be turn on or turn of the dark overlay when you drag or resize.   ???
+
+setSelector		            this method will positioned the selector in the axis given and set the width and height,
+                            the last parameter is if this transition will be animated fires when the selector is dragged
+                            本方法将选择器放置到制定的坐标，并且设定宽度和高度，
+                            最后一个参数指定当选择器被拖动时if this transition will be animated fires
+    Parameters
+        x: value for x axis
+        y: value for y axis
+        w: value for width
+        h: value for height
+        animated: true/false
+        e.g: cropzoom.setSelector(15,15,200,100,true);
+
+onSelectorDrag		fires when the selector is dragged
+                            当选择器被拖动时触发
+    Parameters
+        object: selector
+        positions: x,y, width and height of the selector
+
+onSelectorDragStop		fires when the selector drag stop
+                            当选择器被拖动后停下来时触发
+    Parameters
+        object: selector
+        positions: x,y, width and height of the selector
+
+onSelectorResize		fires when the selector is resized
+                            当调整选择器大小时触发
+    Parameters
+        object: selector
+        positions: x,y, width and height of the selector
+
+onSelectorResizeStop	fires when the selector resize stop
+                            当调整选择器大小完毕时触发
+    Parameters
+        object: selector
+        positions: x,y, width and height of the selector
+
+=== Expose Properties. ===
+=== 暴露属性 ===
+
+Parameter Name	        Default	    Description
+--------------------------------------------------------------------------------
+slidersOrientation	    horizontal	set the direction of the zoom and rotation sliders into the exposed element 设定缩放栏和旋转栏的方向?
+zoomElement	            NULL        the DOM Element that will contain the zoom slider.
+rotationElement	        NULL        the DOM Element that will contain the rotation slider
+elementMovement	        NULL        the DOM Element that will contain the MOVEMENT CONTROL
+movementSteps	        5	        number of pixel that the image will move when click on one of the buttons into the MOVEMENT CONTROL
+
+=== Image Properties, Callbacks and methods. ===
+=== 图像属性，回调函数和方法 ===
+Parameter               Default     Description
+--------------------------------------------------------------------------------
+source                  -           path of the image to use
+rotation                0           rotation in degrees of the image
+x NEW                   0           x axis value
+y NEW                   0           y axis value
+width                   0           original width of the image
+height                  0           original height of the image
+minZoom                 10          percent of the minimum zoom of the image    底图可缩小百分比
+maxZoom                 150         percent of the maximum zoom of the image    底图可放大百分比
+startZoom               50          percent of the starting zoom of the image   底图初始缩放百分比
+useStartZoomAsMinZoom	true        use the minZoom property as startZoom promerty startZoom will be ignored
+snapToContainer	        false	    this allow to drag the image into the container boundaries.
+onZoom      fires when the image is zommed
+        Parameters
+            object: image
+            positions: x,y, width and height of the image
+onRotate	fires when the image is rotated
+        Parameters
+            object: image
+            degrees: number of degrees
+onImageDrag fires when the image is dragged
+        Parameters
+            object: image
+            positions: x,y, width and height of the image

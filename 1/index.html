@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test CropZoom</title>
+<style type="text/css">
+
+DIV.final_preview { float: left; padding: 10px; margin: 5px;}
+
+.clear { clear: both; }
+</style>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.10.4.custom.js"></script>
+<script type="text/javascript" src="js/jquery.cropzoom.js"></script>
+<script type="text/javascript">
+function start_crop(width, height, w, h) {
+     cropzoom = $('#cropzoom_container').cropzoom({
+        width: width+80,
+        height: height+80,
+        bgColor: '#abc',
+        enableRotation: false, // 不允许旋转底图
+        enableZoom: false,     // 不允许缩放底图
+        selector: {
+            x:0,
+            y:0,
+            w:w,
+            h:h,
+            showPositionsOnDrag:true,
+            showDimetionsOnDrag:true,
+            centered: true,
+            bgInfoLayer:'#fff',
+            borderColor: 'blue',
+            animated: false,
+//            maxWidth:900,
+ //           maxHeight:500,
+            borderColorHover: 'yellow',
+            aspectRatio: true,
+            startWithOverlay: true,
+            hideOverlayOnDragAndResize: false,
+        },
+        image: {
+              source: 'test.jpg',
+              width: width,
+              height: height,
+              minZoom: 10,
+              maxZoom: 80,
+              startZoom: 20,
+        }
+    });
+    // 预览 todo modify id and keep click for crop
+    $("#crop").click(function(){
+        cropzoom.send('crop_img.php', 'POST', {}, function(imgRet) {
+            $("#generated").attr("src", imgRet);
+        });              
+    });
+}
+
+function crop_image(width, height, id_name) {
+    var current_image = $("#generated");
+    src = current_image.attr('src');
+    h = current_image.attr('height');
+    w = current_image.attr('width');
+
+    var preview_id = "final_generated_" + w + '_' + h;
+
+    var preview_txt     = w + 'x' + h;
+    var preview_p       = $("<p></p>");
+    preview_p.after(preview_txt);
+
+    var preview_img = $( "#" + preview_id );
+    if ( preview_img.length === 0 ) {
+        var preview_div   = $("<div class='final_preview'></div>")
+        preview_img = $("<img />");
+        preview_img.attr('id', preview_id);
+        preview_img.attr('height', 200);
+
+        var preview_all = $("#preview_all");
+        preview_all.append(preview_div);
+        preview_div.append(preview_img);
+        preview_div.append(preview_p);
+    }
+    preview_img.attr("src", src);
+    $("#generated").attr('src', '');
+}
+
+function choose_crop_size(width, height, id_name) {
+    if (! cropzoom) {
+        start_crop(1600, 1200, width, height);
+    }
+
+    var cropzoom = $('#cropzoom_container').cropzoom({
+        selector: { w:width, h:height, },
+    });
+
+    $("#generated").attr('src', '');
+
+}
+
+function commit_all() {
+    // commit all
+    // if  ok
+    $("#commit_all").append('[待开发]');
+}
+</script>
+
+</head>
+
+<body>
+<div id="header">
+</div>
+
+<div id="main">
+    <h2 class="top_title"><a >test CropZoom</a></h2>
+<div class="crop" id="crop_area">
+    <hr />
+    <div id="preview_all">
+        <button id="commit_all" onclick="commit_all();">提交已有截图</button>
+        <p>已有截图预览:</p>
+        <!-- js generated -->
+    </div>
+    <hr class="clear" />
+    <p><a href="#" onclick="javascript:start_crop(1600, 1200, 200, 200);" >点击开始截图</a></p>
+    <p>选择截图尺寸： 
+        <a href="#" onclick="javascript:choose_crop_size(200, 200, 'final_generated1');" >200*200</a>
+        <a href="#" onclick="javascript:choose_crop_size(316, 244, 'final_generated2');" >316*244</a>
+        <a href="#" onclick="javascript:choose_crop_size(900, 500, 'final_generated3');" >900*500</a>
+        <a href="#" onclick="javascript:choose_crop_size(400, 500, 'final_generated4');" >400*500</a>
+    </p>
+
+    <p>当前截图预览</p>
+    <div id="preview_one">
+        <div class="page_btn">
+            <input type="button" class="btn" onclick="crop_image(); return false;" value="确认" />
+            <input type="button" class="btn" id="crop" value="预览" />
+        </div>
+        <div id="preview_area">
+            <img id="generated" src=""  />
+        </div>
+    </div>
+    <hr />
+    <!-- 待裁剪图像 -->
+    <div id="cropzoom_container">
+        <img src="./test.jpg" />
+    </div>
+
+    <a id="test_focus" href="#">test_focus</a>
+</div>
+</div>
+<div id="footer">
+</div>
+</body>
+</html>
+
