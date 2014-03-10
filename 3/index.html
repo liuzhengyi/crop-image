@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/paste_img.js"></script>
+    <script type="text/javascript" src="js/draggable_without_jui.js"></script>
+    <script type="text/javascript" src="js/crop_base.js"></script>
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+</head>
+
+<body>
+<div id="header">
+</div>
+
+<div id="main">
+    <h2 >Image Crop (test version)</h2>
+    <ol>
+        <li>复制一副图像，在别的页面上图片右键“复制图片”或直接PrtScreen</li>
+        <li>点击屏幕下方“原始图片贴在这”，激活粘贴区</li>
+        <li>Ctrl+V 或者右键“粘贴”</li>
+        <li>选择截图尺寸</li>
+        <li>拖动虚线框选择截取区域</li>
+        <li>双击虚线框预览截图</li>
+        <li>点击“提交至总预览区”</li>
+        <li>选择一个新的截图尺寸继续</li>
+        <li>点击“提交这些截图”提交所有截图</li>
+    </ol>
+    <p>已知问题</p>
+    <ol>
+        <li>疑大图paste不上，具体阈值未知，一张400K的图贴不上。解决中。</li>
+    </ol>
+    <hr />
+    <div id="preview_all">
+        <h3>已有截图预览:</h3>
+        <button id="commit_all" onclick="commit_all('final_img.php', 'POST');">提交这些截图</button>
+        <br class="clear" />
+        <!-- js generated -->
+    </div>
+    <hr class="clear" />
+    <p>选择截图尺寸： 
+        <a href="#" onclick="javascript:choose_crop_size(200, 200, 'final_generated1'); return false;" >200*200</a>
+        <a href="#" onclick="javascript:choose_crop_size(316, 244, 'final_generated2'); return false;" >316*244</a>
+        <a href="#" onclick="javascript:choose_crop_size(900, 500, 'final_generated3'); return false;" >900*500</a>
+        <a href="#" onclick="javascript:choose_crop_size(400, 500, 'final_generated4'); return false;" >400*500</a>
+        <a href="#" onclick="javascript:choose_crop_size(200, 600, 'final_generated4'); return false;" >200*600</a>
+    </p>
+
+    <h3>当前截图预览</h3>
+    <div id="preview_one">
+        <div class="page_btn">
+            <input type="button" class="btn" onclick="javascript:pre_commit(); return false;" value="提交至总预览区" />
+        </div>
+        <div id="preview_area">
+            <img id="generated" src=""  />
+        </div>
+    </div>
+    <hr />
+    <!-- 待裁剪图像 -->
+    <h3>原始图片</h3>
+    <div id="editable" contenteditable="false" >
+        <p id="paste-here">&gt;&gt;点我激活贴图区&lt;&lt;</p>
+        <div id="crop_selector" >
+        </div>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="js/crop.js"></script>
+</html>
+
