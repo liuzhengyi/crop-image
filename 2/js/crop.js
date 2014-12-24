@@ -41,7 +41,7 @@ function choose_crop_size(w, h, id ) {
                     slctw,
                     slcth,
                     function(imgRet) {
-                        $("#generated").attr("src", imgRet);
+                        $("#generated").attr("src", imgRet+"?"+Math.random());
                     }
         );
     });
